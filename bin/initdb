@@ -1,0 +1,17 @@
+import getpass
+from argparse import ArgumentParser
+
+from dataloader import init_db
+
+if __name__ == '__main__':
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument('database')
+    arg_parser.add_argument('--host', default='localhost')
+    arg_parser.add_argument('--port', default=5432, type=int)
+    arg_parser.add_argument('--dbuser', default='postgres')
+
+    args = arg_parser.parse_args()
+    password = getpass.getpass()
+
+    init_db(args.database, args.host, args.port, args.dbuser, password)
+    exit(0)

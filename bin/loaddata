@@ -1,0 +1,56 @@
+#!/usr/bin/env python
+import getpass
+from argparse import ArgumentParser
+
+from dataloader import PostGISDataLoader
+
+"""
+Example call:
+
+loaddata --pointfeatureclasses=http://linkedgeodata.org/ontology/BusStop \
+    --linefeatureclasses=http://dl-learner.org/ont/BusRoute qrowd_01 \
+    http://geovocab.org/geometry#geometry \
+    http://www.opengis.net/ont/geosparql#asWKT /tmp/1008-bus-lines-urban_s*
+"""
+
+if __name__ == '__main__':
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument('database')
+    arg_parser.add_argument('geometryresourceproperties', help='comma separated')
+    arg_parser.add_argument('geometryliteralproperties', help='comma separated')
+    arg_parser.add_argument('inputfiles', nargs='+')
+    arg_parser.add_argument('--host', default='localhost')
+    arg_parser.add_argument('--port', default=5432, type=int)
+    arg_parser.add_argument('--dbuser', default='postgres')
+    arg_parser.add_argument(
+        '--pointfeatureclasses',
+        help='comma separated',
+        default='http://dl-learner.org/ont/spatial#PointFeature')
+    arg_parser.add_argument(
+        '--linefeatureclasses',
+        help='comma separated',
+        default='http://dl-learner.org/ont/spatial#LineFeature')
+    arg_parser.add_argument(
+        '--areafeatureclasses',
+        help='comma separated',
+        default='http://dl-learner.org/ont/spatial#AreaFeature')
+
+    args = arg_parser.parse_args()
+    password = getpass.getpass()
+
+    data_loader = PostGISDataLoader(
+        args.geometryresourceproperties.split(','),
+        args.geometryliteralproperties.split(','),
+        args.pointfeatureclasses.split(','),
+        args.linefeatureclasses.split(','),
+        args.areafeatureclasses.split(','),
+        args.database,
+        args.host,
+        args.port,
+        args.dbuser,
+        password)
+
+    for input_file_path in args.inputfiles:
+        data_loader.load_geometry_data(input_file_path)
+
+    exit(0)
