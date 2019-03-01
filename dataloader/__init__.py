@@ -11,7 +11,7 @@ class PostGISDataLoader(object):
     writing them to a PostGIS database.
     An RDF resource is considered a geometry resource if is has a literal
     assigned via an RDF property contained in the provided list
-    `geometry_rdf_properties` of known geometry properties.
+    `geometry_resource_properties` of known geometry properties.
 
     TODO: Allow different reference systems
     """
@@ -108,7 +108,8 @@ class PostGISDataLoader(object):
 
         for geom_res_prop in self.geometry_resource_properties:
             for geom_lit_prop in self.geometry_literal_properties:
-                self._find_and_load_geometry_data(geom_res_prop, geom_lit_prop, g)
+                self._find_and_load_geometry_data(
+                    geom_res_prop, geom_lit_prop, g)
 
 
 def init_db(

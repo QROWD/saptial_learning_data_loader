@@ -16,7 +16,8 @@ loaddata --pointfeatureclasses=http://linkedgeodata.org/ontology/BusStop \
 if __name__ == '__main__':
     arg_parser = ArgumentParser()
     arg_parser.add_argument('database')
-    arg_parser.add_argument('geometryresourceproperties', help='comma separated')
+    arg_parser.add_argument(
+        'geometryresourceproperties', help='comma separated')
     arg_parser.add_argument('geometryliteralproperties', help='comma separated')
     arg_parser.add_argument('inputfiles', nargs='+')
     arg_parser.add_argument('--host', default='localhost')
