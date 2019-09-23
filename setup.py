@@ -16,5 +16,6 @@ setup(
     scripts=[
         'bin/loaddata',
         'bin/initdb',
+        'bin/convertusergpsdata',
     ],
 )

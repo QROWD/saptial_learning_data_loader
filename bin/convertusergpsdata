@@ -1,0 +1,12 @@
+from argparse import ArgumentParser
+from userdataconverter import convert_user_data
+
+if __name__ == '__main__':
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument('inputfile')
+
+    args = arg_parser.parse_args()
+
+    convert_user_data(args.inputfile)
+    exit(0)
+
