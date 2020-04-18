@@ -1,0 +1,25 @@
+#!/usr/bin/python
+from argparse import ArgumentParser
+
+from datagenerator import DataGenerator
+
+# generatedata 13.74 51.05 . 10 50 100 500 1000 5000 10000 50000 100000 500000
+if __name__ == '__main__':
+    argument_parser = ArgumentParser()
+
+    argument_parser.add_argument('center_lon', type=float)
+    argument_parser.add_argument('center_lat', type=float)
+    argument_parser.add_argument('output_dir')
+    argument_parser.add_argument('num_geoms', type=int, nargs='+')
+
+    arguments = argument_parser.parse_args()
+
+    data_generator = DataGenerator(
+        center_lat=arguments.center_lat,
+        center_lon=arguments.center_lon,
+        output_dir=arguments.output_dir)
+
+    sample_sizes = arguments.num_geoms
+
+    for num_samples in sample_sizes:
+        data_generator.generate(num_samples)
