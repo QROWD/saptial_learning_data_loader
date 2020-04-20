@@ -18,5 +18,6 @@ setup(
         'bin/initdb',
         'bin/convertusergpsdata',
         'bin/sampledata',
+        'bin/generatedata'
     ],
 )
