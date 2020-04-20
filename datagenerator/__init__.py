@@ -7,7 +7,9 @@ from random import randint
 from random import random
 from random import uniform
 
-from rdflib import Graph, Literal, URIRef
+from rdflib import Graph, Literal, URIRef, RDF
+
+from dataloader.datasampler import DataSampler
 
 logging.basicConfig(level=logging.INFO)
 
@@ -143,10 +145,12 @@ class DataGenerator(object):
 
         for wkt_str in polygons:
             wkt_lit = Literal(wkt_str, None, self.wkt_dtype)
+            feature_cls = DataSampler._get_feature_cls(wkt_lit)
             hsh = hash(wkt_str)
             feature_res = URIRef(self.ns + f'feature_{hsh}')
             geom_res = URIRef(self.ns + f'geometry_{hsh}')
 
+            g.add((feature_res, RDF.type, feature_cls))
             g.add((feature_res, self.geosparql_has_geometry, geom_res))
             g.add((geom_res, self.geosparql_as_wkt, wkt_lit))
 

@@ -1,13 +1,17 @@
 import os
 import random
 
-from rdflib import Graph, URIRef
+from rdflib import Graph, URIRef, RDF
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
 GEOVOCAB_GEOMETRY = URIRef('http://geovocab.org/geometry#geometry')
 GEOSPARQL_AS_WKT = URIRef('http://www.opengis.net/ont/geosparql#asWKT')
+
+POINT_FEATURE_CLS = URIRef('http://dl-learner.org/ont/spatial#PointFeature')
+LINE_FEATURE_CLS = URIRef('http://dl-learner.org/ont/spatial#LineFeature')
+AREA_FEATURE_CLS = URIRef('http://dl-learner.org/ont/spatial#AreaFeature')
 
 
 class DataSampler(object):
@@ -21,6 +25,18 @@ class DataSampler(object):
         self.point_table_name = 'point'
         self.line_str_table_name = 'line_string'
         self.polygon_table_name = 'polygon'
+
+    @staticmethod
+    def _get_feature_cls(wkt_lit):
+        wkt_lit_str = str(wkt_lit)
+        if wkt_lit_str.startswith('POINT'):
+            return POINT_FEATURE_CLS
+        elif wkt_lit_str.startswith('LINE'):
+            return LINE_FEATURE_CLS
+        elif wkt_lit_str.startswith('POLY'):
+            return AREA_FEATURE_CLS
+        else:
+            raise RuntimeError(f'Unknown type of {wkt_lit_str}')
 
     def sample(self):
         triple_counts = self._get_triple_counts()
@@ -62,6 +78,8 @@ class DataSampler(object):
                     """)
 
                 for feature, geom, wkt_lit, _ in query_result:
+                    feature_cls = self._get_feature_cls(wkt_lit)
+                    result_graph.add((feature, RDF.type, feature_cls))
                     result_graph.add((feature, GEOVOCAB_GEOMETRY, geom))
                     result_graph.add((geom, GEOSPARQL_AS_WKT, wkt_lit))
 
