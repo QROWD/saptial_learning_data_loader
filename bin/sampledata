@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+from argparse import ArgumentParser
+
+from dataloader.datasampler import DataSampler
+
+if __name__ == '__main__':
+    argument_parser = ArgumentParser()
+    argument_parser.add_argument('datadir')
+    argument_parser.add_argument('outfile_owl')
+    argument_parser.add_argument('outfile_pg')
+
+    arguments = argument_parser.parse_args()
+
+    data_dir = arguments.datadir
+    owl_out_file_path = arguments.outfile_owl
+    pg_out_file_path = arguments.outfile_pg
+
+    data_sampler = DataSampler(data_dir, owl_out_file_path, pg_out_file_path)
+    data_sampler.sample()
