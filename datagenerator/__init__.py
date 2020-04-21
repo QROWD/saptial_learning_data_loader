@@ -120,7 +120,7 @@ class DataGenerator(object):
         multiplier_lat = [stretch * math.cos(s) for s in steps]
         multiplier_lon = [stretch * math.sin(s) for s in steps]
 
-        for i in range(1, num_points-1):
+        for i in range(1, num_points):
             prev_lon, prev_lat = tmp_points[i - 1]
 
             lon = prev_lon + (random() *
