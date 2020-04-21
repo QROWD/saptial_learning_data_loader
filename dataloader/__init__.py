@@ -81,11 +81,11 @@ class PostGISDataLoader(object):
 
         for feature_cls, geom_res, geom_lit in query_res:
             if feature_cls in self.point_feature_classes:
-                table = 'point_feature'
+                table = 'point'
             elif feature_cls in self.line_feature_classes:
-                table = 'line_feature'
+                table = 'line_string'
             elif feature_cls in self.area_feature_classes:
-                table = 'area_feature'
+                table = 'polygon'
             else:
                 logging.error(f'Unknown feature class <{str(feature_cls)}>')
                 continue
@@ -128,23 +128,23 @@ def init_db(
     cursor.execute('CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;')
 
     cursor.execute("""
-    CREATE TABLE area_feature (
+    CREATE TABLE polygon (
         iri character varying(255),
-        the_geom public.geometry
+        the_geom geometry(Polygon)
     );
     """)
 
     cursor.execute("""
-    CREATE TABLE line_feature (
+    CREATE TABLE line_string (
         iri character varying(255),
-        the_geom public.geometry
+        the_geom geometry(Linestring)
     );
     """)
 
     cursor.execute("""
-    CREATE TABLE point_feature (
+    CREATE TABLE point (
         iri character varying(255),
-        the_geom public.geometry
+        the_geom geometry(Point)
     );
     """)
 
