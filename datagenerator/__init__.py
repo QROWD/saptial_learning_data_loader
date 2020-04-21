@@ -171,8 +171,9 @@ class DataGenerator(object):
 
                 hsh = hash(wkt_str)
                 geom_iri = self.ns + f'geometry_{hsh}'
-                sql_str = f"INSERT INTO {table_name} " \
-                          f"VALUES ('{geom_iri}', ST_GeomFromText('{wkt_str}');"
+                sql_str = \
+                    f"INSERT INTO {table_name} " \
+                    f"VALUES ('{geom_iri}', ST_GeomFromText('{wkt_str}'));"
 
                 out_file.write(sql_str + os.linesep)
 
