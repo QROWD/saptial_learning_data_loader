@@ -9,9 +9,9 @@ logging.basicConfig(level=logging.DEBUG)
 GEOVOCAB_GEOMETRY = URIRef('http://geovocab.org/geometry#geometry')
 GEOSPARQL_AS_WKT = URIRef('http://www.opengis.net/ont/geosparql#asWKT')
 
-POINT_FEATURE_CLS = URIRef('http://dl-learner.org/ont/spatial#PointFeature')
-LINE_FEATURE_CLS = URIRef('http://dl-learner.org/ont/spatial#LineFeature')
-AREA_FEATURE_CLS = URIRef('http://dl-learner.org/ont/spatial#AreaFeature')
+POINT_FEATURE_CLS = URIRef('http://dl-learner.org/spatial#PointFeature')
+LINE_FEATURE_CLS = URIRef('http://dl-learner.org/spatial#LineFeature')
+AREA_FEATURE_CLS = URIRef('http://dl-learner.org/spatial#AreaFeature')
 
 
 class DataSampler(object):
