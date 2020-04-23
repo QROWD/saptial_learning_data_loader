@@ -92,7 +92,7 @@ class DataSampler(object):
                 del g
 
                 while samples_extracted < num_samples:
-                    filename = random.choice(triple_counts)
+                    filename = random.choice(list(triple_counts.keys()))
 
                     logging.info(f'Loading randomly chosen file {filename} '
                                  f'to sample 1 triple')
