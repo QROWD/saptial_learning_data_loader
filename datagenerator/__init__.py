@@ -7,9 +7,10 @@ from random import randint
 from random import random
 from random import uniform
 
-from rdflib import Graph, Literal, URIRef, RDF
+from rdflib import Graph, Literal, URIRef, RDF, OWL, RDFS
 
-from dataloader.datasampler import DataSampler
+from dataloader.datasampler import DataSampler, POINT_FEATURE_CLS, \
+    LINE_FEATURE_CLS, AREA_FEATURE_CLS
 
 logging.basicConfig(level=logging.INFO)
 
@@ -143,6 +144,19 @@ class DataGenerator(object):
     def _write_kb(self, polygons, file_path):
         g = Graph()
 
+        spatial_feature_cls = URIRef(
+            'http://dl-learner.org/spatial#SpatialFeature')
+
+        g.add((self.geosparql_has_geometry, RDF.type, OWL.ObjectProperty))
+        g.add((self.geosparql_as_wkt, RDF.type, OWL.DatatypeProperty))
+        g.add((POINT_FEATURE_CLS, RDF.type, OWL.Class))
+        g.add((LINE_FEATURE_CLS, RDF.type, OWL.Class))
+        g.add((AREA_FEATURE_CLS, RDF.type, OWL.Class))
+        g.add((spatial_feature_cls, RDF.type, OWL.Class))
+        g.add((AREA_FEATURE_CLS, RDFS.subClassOf, spatial_feature_cls))
+        g.add((LINE_FEATURE_CLS, RDFS.subClassOf, spatial_feature_cls))
+        g.add((POINT_FEATURE_CLS, RDFS.subClassOf, spatial_feature_cls))
+
         for wkt_str in polygons:
             wkt_lit = Literal(wkt_str, None, self.wkt_dtype)
             feature_cls = DataSampler._get_feature_cls(wkt_lit)
@@ -204,4 +218,4 @@ class DataGenerator(object):
         pg_file_name = f'load_{num_samples}.sql'
         self._write_pg_script(
             polygons, os.path.join(self.output_dir, pg_file_name))
-        logging.debug('GEOMETRYCOLLECTION(' + ', '.join(polygons) + ')')
+        # logging.debug('GEOMETRYCOLLECTION(' + ', '.join(polygons) + ')')
