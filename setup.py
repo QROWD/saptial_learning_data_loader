@@ -12,12 +12,14 @@ setup(
     install_requires=[
         'rdflib==4.2.2',
         'psycopg2==2.7.7',
+        'matplotlib==3.2.1'
     ],
     scripts=[
         'bin/loaddata',
         'bin/initdb',
         'bin/convertusergpsdata',
         'bin/sampledata',
-        'bin/generatedata'
+        'bin/generatedata',
+        'bin/plotresults'
     ],
 )

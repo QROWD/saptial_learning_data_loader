@@ -1,0 +1,54 @@
+from argparse import ArgumentParser
+from statistics import mean
+
+import matplotlib.pyplot as plt
+
+
+def plot_results(result_file_names):
+    results = {}
+
+    for result_file_name in result_file_names:
+        with open(result_file_name) as result_file:
+            for line in result_file:
+                eval_id, _, *timings = line.split(',')
+                timings = map(lambda t: float(t.strip()), timings)
+                dataset, dataset_size, relation = eval_id.split('_')
+
+                if results.get(relation) is None:
+                    results[relation] = {}
+
+                if results[relation].get(dataset_size) is None:
+                    results[relation][dataset_size] = {}
+
+                results[relation][dataset_size][dataset] = [t for t in timings]
+
+    for relation in results:
+        relation_results = results[relation]
+
+        sizes = [s for s in map(lambda s: int(s), relation_results.keys())]
+        avg_timings = []
+        for size in relation_results:
+            tmp_timings = []
+            for dataset in relation_results[size]:
+                if len(relation_results[size][dataset]) > 1:
+                    # excludes cold cache case
+                    tmp_timings += relation_results[size][dataset][1:]
+                else:
+                    tmp_timings += relation_results[size][dataset]
+
+            avg_timings.append(mean(tmp_timings))
+
+        if dataset.startswith('dummy'):
+            plt.plot(sizes, avg_timings, label=relation, linestyle=':')
+        else:
+            plt.plot(sizes, avg_timings, label=relation)
+    plt.legend()
+    plt.show()
+
+
+if __name__ == '__main__':
+    argument_parser = ArgumentParser()
+    argument_parser.add_argument('resultfile', nargs='+')
+
+    arguments = argument_parser.parse_args()
+    plot_results(arguments.resultfile)
