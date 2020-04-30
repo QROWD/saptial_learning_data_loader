@@ -1,0 +1,19 @@
+from argparse import ArgumentParser
+
+from datagenerator.hotels import CarFriendlyHotelGenerator
+
+if __name__ == '__main__':
+    argument_parser = ArgumentParser()
+
+    argument_parser.add_argument('numpos', type=int)
+    argument_parser.add_argument('numneg', type=int)
+    argument_parser.add_argument('outputdir')
+
+    arguments = argument_parser.parse_args()
+
+    generator = CarFriendlyHotelGenerator(
+        arguments.numpos,
+        arguments.numneg)
+
+    generator.write_hotel_data(arguments.outputdir)
+

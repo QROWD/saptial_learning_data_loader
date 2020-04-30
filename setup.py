@@ -20,6 +20,7 @@ setup(
         'bin/convertusergpsdata',
         'bin/sampledata',
         'bin/generatedata',
-        'bin/plotresults'
+        'bin/plotresults',
+        'bin/generatehotels',
     ],
 )
