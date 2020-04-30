@@ -22,6 +22,10 @@ class DataGenerator(object):
         URIRef('http://www.opengis.net/ont/geosparql#hasGeometry')
     ns = 'http://dl-learner.org/spatial#'
 
+    point_table_name = 'point'
+    line_string_table_name = 'line_string'
+    polygon_table_name = 'polygon'
+
     def __init__(self, center_lon, center_lat, output_dir):
         self.center_lon = center_lon
         self.center_lat = center_lat
@@ -38,10 +42,6 @@ class DataGenerator(object):
         self.polygon_type = 'polygon'
         self.polygon_types = [
             self.point_type, self.line_string_type, self.polygon_type]
-
-        self.point_table_name = 'point'
-        self.line_string_table_name = 'line_string'
-        self.polygon_table_name = 'polygon'
 
         self._neighboring_point_distance = 0.0005
         self._max_polygon_neighboring_distance = 0.001
